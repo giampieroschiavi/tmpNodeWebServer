@@ -4,13 +4,13 @@ RUN apk add --no-cache --update bash
 
 WORKDIR /myapp
 
-COPY package*.json ./
+COPY myapp/package*.json ./
 
 RUN npm install
 
-COPY . .
+COPY myapp/ .
 
 EXPOSE 3000
 
-CMD [ "node", "app/index.js" ]
+CMD [ "node", "index.js" ]
 
