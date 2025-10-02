@@ -1,0 +1,42 @@
+name: 'CI'
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint code
+        run: npm run lint
+
+      - name: Build action
+        run: npm run build
+
+      - name: Test action
+        run: npm test
+
+      - name: Test action execution
+        run: |
+          # Test that the built action can be executed
+          node dist/index.js
+        env:
+          INPUT_MESSAGE: "Test message"
+          INPUT_VERSION: "1.0.0"
+
+
